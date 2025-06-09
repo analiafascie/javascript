@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ejercicio Javascript</title>
+  <style>
+    body {
+      font-family: Roboto, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    h1 {
+      color: #333;
+    }
+    h2 {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="mensajeBienvenida"></h1>
+  <h2 id="mensajeDias"></h2>
+
+  <script>
+    // Solicitar nombre
+    let nombre = prompt("Ingrese su nombre");
+    if (nombre === null || nombre.trim() === "") {
+      nombre = "Usuario"; // Valor predeterminado si se cancela o está vacío
+    }
+
+    // Solicitar apellido
+    let apellido = prompt("Ingrese su apellido");
+    if (apellido === null || apellido.trim() === "") {
+      apellido = ""; // Apellido vacío por defecto
+    }
+
+    // Mostrar mensaje de bienvenida inicial
+    document.getElementById("mensajeBienvenida").textContent = 
+      `Bienvenido/a, ${nombre} ${apellido}!`;
+
+    // Solicitar fecha de nacimiento con validación
+    let fechaNacimientoStr = prompt("Ingrese su fecha de nacimiento - formato: AAAA-MM-DD");
+    let fechaNacimiento;
+    let fechaValida = false;
+
+    // Bucle para validar la fecha
+    while (!fechaValida) {
+      if (fechaNacimientoStr === null) {
+        // El usuario canceló
+        alert("No se pudo obtener la fecha de nacimiento. El cálculo de días vividos no estará disponible.");
+        break; // Salir del bucle
+      }
+
+      // Intentar crear un objeto Date
+      fechaNacimiento = new Date(fechaNacimientoStr);
+
+      // Validar si la fecha es válida (no es NaN y el formato es el esperado)
+      if (!isNaN(fechaNacimiento.getTime()) && fechaNacimientoStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        fechaValida = true; // La fecha es válida, salir del bucle
+      } else {
+        fechaNacimientoStr = prompt("Formato de fecha incorrecto o fecha inválida. Por favor, ingrese su fecha de nacimiento en formato: AAAA-MM-DD");
+      }
+    }
+
+    // Calcular y mostrar días vividos solo si la fecha es válida
+    if (fechaValida) {
+      const hoy = new Date();
+      const diferenciaMs = hoy - fechaNacimiento;
+      const diasVividos = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+
+      document.getElementById("mensajeDias").textContent = 
+        `Has vivido ${diasVividos} días.`;
+    } else {
+      document.getElementById("mensajeDias").textContent = 
+        "No se pudo calcular la cantidad de días vividos debido a un error en la fecha de nacimiento.";
+    }
+  </script>
+</body>
+</html>
